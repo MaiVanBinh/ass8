@@ -48,23 +48,23 @@ const calculateCommunicationCost = (sideId1, sideId2, m_size) => {
     return Cini*(m_size /P_SIZE) + CTR[sideId1][sideId2]*m_size;
 }
 
-// const calculatorCCload = () => {
-//   let CCload = 0;
-//   for(let i = 0; i < FAT.length; i++){
-//     for(let j = 0; j < FAT[0].length; j++) {
-//       CCload += (FAT[i][j]*calculateCommunicationCost(SI,j, SIZE_OF_FRAGMENT[i]));
-//       console.log('SI=',(SI+1),'- j=',(j+1),`- F[${j+1}]=`,SIZE_OF_FRAGMENT[i]);
-//       console.log(`FAT[${i+1}][${j+1}] =`, FAT[i][j]);
-//       console.log(`CC(CTR ${SI+1},${j+1},${SIZE_OF_FRAGMENT[i]})=`, calculateCommunicationCost(SI,j, SIZE_OF_FRAGMENT[i]));
-//       console.log(`CCload[j = ${i+1}, k = ${j+1}] = ${FAT[i][j] + calculateCommunicationCost(SI,j, SIZE_OF_FRAGMENT[i])}`)
-//       console.log('\n');
+const calculatorCCload = () => {
+  let CCload = 0;
+  for(let i = 0; i < FAT.length; i++){
+    for(let j = 0; j < FAT[0].length; j++) {
+      CCload += (FAT[i][j]*calculateCommunicationCost(SI,j, SIZE_OF_FRAGMENT[i]));
+      console.log('SI=',(SI+1),'- j=',(j+1),`- F[${j+1}]=`,SIZE_OF_FRAGMENT[i]);
+      console.log(`FAT[${i+1}][${j+1}] =`, FAT[i][j]);
+      console.log(`CC(CTR ${SI+1},${j+1},${SIZE_OF_FRAGMENT[i]})=`, calculateCommunicationCost(SI,j, SIZE_OF_FRAGMENT[i]));
+      console.log(`CCload[j = ${i+1}, k = ${j+1}] = ${FAT[i][j] + calculateCommunicationCost(SI,j, SIZE_OF_FRAGMENT[i])}`)
+      console.log('\n');
 
-//     }
-//   }
-//   console.log('CCload =', CCload);
-// }
+    }
+  }
+  console.log('CCload =', CCload);
+}
 
-// calculatorCCload();
+calculatorCCload();
 
 const calculatorMinimumTransmissionCost = (sizeId = 0, transactionId = 0, fragmentId) => {
   let minTC = Infinity;
