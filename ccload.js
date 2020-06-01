@@ -55,8 +55,10 @@ const calculatorCCload = () => {
       CCload += (FAT[i][j]*calculateCommunicationCost(SI,j, SIZE_OF_FRAGMENT[i]));
       console.log('SI=',(SI+1),'- j=',(j+1),`- F[${j+1}]=`,SIZE_OF_FRAGMENT[i]);
       console.log(`FAT[${i+1}][${j+1}] =`, FAT[i][j]);
+      console.log(`size(F${i+1} = ${SIZE_OF_FRAGMENT[i]}`);
+      console.log(`CTR ${SI+1},${j+1} = ${CTR[SI][j]}`)
       console.log(`CC(CTR ${SI+1},${j+1},${SIZE_OF_FRAGMENT[i]})=`, calculateCommunicationCost(SI,j, SIZE_OF_FRAGMENT[i]));
-      console.log(`CCload[j = ${i+1}, k = ${j+1}] = ${FAT[i][j] + calculateCommunicationCost(SI,j, SIZE_OF_FRAGMENT[i])}`)
+      console.log(`CCload[j = ${i+1}, k = ${j+1}] = ${CCload}`)
       console.log('\n');
 
     }
@@ -66,79 +68,82 @@ const calculatorCCload = () => {
 
 calculatorCCload();
 
-const calculatorMinimumTransmissionCost = (sizeId = 0, transactionId = 0, fragmentId) => {
-  let minTC = Infinity;
-  for(let s = 0; s < FAT[0].length; s++){
-    if(FAT[fragmentId][s] === 1) {
-      console.log(`i=${transactionId+1} - k=${sizeId+1}`);
-      console.log(`j=${fragmentId+1} - s=${s+1}`);
-      const m_size = (SEL[transactionId][fragmentId]/100)*SIZE_OF_FRAGMENT[fragmentId];
-      console.log(`m_size = (SEL[${transactionId+1}][${fragmentId+1}]/100)*size(F[${fragmentId+1}]}) = ${m_size}`)
-      const result = calculateCommunicationCost(sizeId, s, m_size);
-      console.log(`CC(CTR ${sizeId + 1},${s+1},${m_size})=`,result,'\n');
-      if(minTC > result){
-        minTC = result;
-      }
-    }
-  }
-  console.log('min=',minTC)
-  return minTC;
-}
+// const calculatorMinimumTransmissionCost = (sizeId = 0, transactionId = 0, fragmentId) => {
+//   let minTC = Infinity;
+//   for(let s = 0; s < FAT[0].length; s++){
+//     if(FAT[fragmentId][s] === 1) {
+//       console.log(`i=${transactionId+1} - k=${sizeId+1}`);
+//       console.log(`j=${fragmentId+1} - s=${s+1}`);
+//       const m_size = (SEL[transactionId][fragmentId]/100)*SIZE_OF_FRAGMENT[fragmentId];
+//       console.log(`m_size = (SEL[${transactionId+1}][${fragmentId+1}]/100)*size(F[${fragmentId+1}]}) = ${m_size}`)
+//       const result = calculateCommunicationCost(sizeId, s, m_size);
+//       console.log(`CC(CTR ${sizeId + 1},${s+1},${m_size})=`,result,'\n');
+//       if(minTC > result){
+//         minTC = result;
+//       }
+//     }
+//   }
+//   console.log('min=',minTC)
+//   return minTC;
+// }
 
-const calculatorTRi = (sizeId, transactionId) => {
-  console.log(`Calculator TRi with transaction T[${transactionId+1}] at site S[${sizeId+1}]:\n`);
-  let total = 0;
-  for(let j = 0; j < SIZE_OF_FRAGMENT.length; j++) {
-    const minTC = calculatorMinimumTransmissionCost(sizeId, transactionId, j);
-    const result = RM[transactionId][j]*minTC;
-    console.log(`TRi= ${total} + ${result} = ${total+result}`)
-    total += result;
-    console.log('-----------------------------------');
-  }
-  return total;
-}
+// const calculatorTRi = (sizeId, transactionId) => {
+//   console.log(`Calculator TRi with transaction T[${transactionId+1}] at site S[${sizeId+1}]:\n`);
+//   let total = 0;
+//   for(let j = 0; j < SIZE_OF_FRAGMENT.length; j++) {
+//     const minTC = calculatorMinimumTransmissionCost(sizeId, transactionId, j);
+//     const result = RM[transactionId][j]*minTC;
+//     console.log(`asdasdasd ${j}`);
+//     console.log(`TRi= ${total} + ${result} = ${total+result}`)
+//     total += result;
+//     console.log('-----------------------------------');
+//   }
+//   return total;
+// }
 
-const calculatorTotalTransmissionCosts = (sizeId, transactionId, fragmentId) => {
-  let total = 0;
-  const m_size = (SEL[transactionId][fragmentId]/100)*SIZE_OF_FRAGMENT[fragmentId];
-  const length = FAT[0].length;
-  for(let l = 0; l< length; l++){
-    console.log(`i=${transactionId+1} - k=${sizeId+1}`);
-    console.log(`j=${fragmentId+1} - l=${l+1}`);
-    console.log(`m_size = (SEL[${transactionId+1}][${fragmentId+1}]/100)*size(F[${fragmentId+1}]}) = ${m_size}`)
-    const result = FAT[fragmentId][l]*calculateCommunicationCost(sizeId, l, m_size);
-    console.log(`FAT[${fragmentId}][${l+1}]*CC(CTR ${sizeId + 1},${l+1},${m_size})=`,result,'\n');
-    total += result;
-  }
-  return total;
-}
+// const calculatorTotalTransmissionCosts = (sizeId, transactionId, fragmentId) => {
+//   let total = 0;
+//   const m_size = (SEL[transactionId][fragmentId]/100)*SIZE_OF_FRAGMENT[fragmentId];
+//   const length = FAT[0].length;
+//   for(let l = 0; l< length; l++){
+//     console.log(`i=${transactionId+1} - k=${sizeId+1}`);
+//     console.log(`j=${fragmentId+1} - l=${l+1}`);
+//     console.log(`m_size = (SEL[${transactionId+1}][${fragmentId+1}]/100)*size(F[${fragmentId+1}]}) = ${m_size}`)
+//     const result = FAT[fragmentId][l]*calculateCommunicationCost(sizeId, l, m_size);
+//     console.log(`FAT[${fragmentId}][${l+1}]*CC(CTR ${sizeId + 1},${l+1},${m_size})=`,result,'\n');
+//     total += result;
+//     console.log( `Total = ${total}`);
+//   }
+//   return total;
+// }
 
-const calculatorTUi = (sizeId, transactionId) => {
-  console.log(`Calculator TUi with transaction T[${transactionId+1}] at site S[${sizeId+1}]:\n`);
-  let total = 0;
-  for(let j = 0; j < SIZE_OF_FRAGMENT.length; j++) {
-    const totalTC = calculatorTotalTransmissionCosts(sizeId, transactionId, j);
-    const result = UM[transactionId][j]*totalTC;
-    console.log(`TUi= ${total} + ${result} = ${total+result}`)
-    total += UM[transactionId][j]*totalTC;
-    console.log('-----------------------------------');
-  }
-  return total;
-}
+// const calculatorTUi = (sizeId, transactionId) => {
+//   console.log(`Calculator TUi with transaction T[${transactionId+1}] at site S[${sizeId+1}]:\n`);
+//   let total = 0;
+//   for(let j = 0; j < SIZE_OF_FRAGMENT.length; j++) {
+//     const totalTC = calculatorTotalTransmissionCosts(sizeId, transactionId, j);
+//     const result = UM[transactionId][j]*totalTC;
+//     console.log(`TUi= ${total} + ${result} = ${total+result}`)
+//     total += UM[transactionId][j]*totalTC;
+//     console.log('-----------------------------------');
+//   }
+//   return total;
+// }
 
-const calculatorCCproc = () => {
-  let site = FAT[0].length;
-  let transaction = FAT.length;
-  let CCproc = 0;
-  for(let k = 0; k < site; k++){
-    for(let i = 0; i< transaction; i++) {
-      console.log('***********************************************');
-      const TRi = calculatorTRi(k, i);
-      const TUi = calculatorTUi(k, i);
-      CCproc += FREQ[i][k]*(TRi + TUi + VCini)
-    }
-  }
-  console.log('CCproc =', CCproc);
-}
+// const calculatorCCproc = () => {
+//   let site = FAT[0].length;
+//   let transaction = FAT.length;
+//   let CCproc = 0;
+//   for(let k = 0; k < site; k++){
+//     for(let i = 0; i< site; i++) {
+//       console.log('***********************************************');
+//       console.log(`FREQ[${i+1}][${k+1}] = ${FREQ[i][k]}`)
+//       const TRi = calculatorTRi(k, i);
+//       const TUi = calculatorTUi(k, i);``
+//       CCproc += FREQ[i][k]*(TRi + TUi + VCini)
+//     }
+//   }
+//   console.log('CCproc =', CCproc);
+// }
 
-calculatorCCproc();
+// calculatorCCproc();
